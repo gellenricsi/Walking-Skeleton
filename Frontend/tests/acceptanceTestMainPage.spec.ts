@@ -15,12 +15,12 @@ test.describe('Moving Company Order Form', () => {
   test('Fill in the fields correctly and submit', async ({ page }) => {
     await page.fill('#name', 'John Wick');
     await page.fill('#email', 'example@ex.com');
-    await page.fill('#phone', '00000000');
+    await page.fill('#phone', '00000000000');
     await page.fill('#pickupAddress', 'address');
     await page.fill('#deliveryAddress', '!! address');
     
     // Datum selection
-    await page.fill('#movingDate', '2025-05-10');
+    await page.fill('#movingDate', '10-05-2025');
 
     // Add note
     await page.fill('#note', 'This is a note.');
