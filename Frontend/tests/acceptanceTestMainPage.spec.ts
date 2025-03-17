@@ -14,31 +14,33 @@ test.describe('Moving Company Order Form', () => {
 
   test('Fill in the fields correctly and submit', async ({ page }) => {
     await page.fill('#name', 'John Wick');
-    await page.fill('#email', 'example@ex.com');
-    await page.fill('#phone', '00000000000');
+    await page.fill('#email', 'example@gmail.com');
+    await page.fill('#phone', '06308792592');
     await page.fill('#pickupAddress', 'address');
-    await page.fill('#deliveryAddress', '!! address');
+    await page.fill('#deliveryAddress', 'address');
     
     // Datum selection
-    await page.fill('#movingDate', '10-05-2025');
+    await page.fill('#movingDate', '2222-10-05');
 
     // Add note
     await page.fill('#note', 'This is a note.');
 
     // Is there an elevator?
-    await page.check('#elevator');
+    await page.locator('#elevator').click();
 
     //Choosing a truck type
-    await page.getByLabel('Choose a truck').selectOption('Xl');
+    const truckSelect = page.locator('mat-select[formcontrolname="truckType"]');
+    await truckSelect.click();
+    await page.locator('mat-option[value="Xl"]').click();
 
     // Which floor?
     await page.fill('#floor', '4');
 
     // Checkbox is checked?
-    await page.check('#terms');
+    await page.locator('#terms').click();
 
     // Sending the form
-    await page.click('#submitBtn');
+    await page.getByRole('button', { name: 'Submit' }).click();
 
     // Is the order successful?
     await expect(page.locator('.success-message')).toHaveText('Order sent successfully!');
