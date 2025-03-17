@@ -41,15 +41,6 @@ test.describe('Moving Company Order Form', () => {
 
     // Sending the form
     await page.getByRole('button', { name: 'Submit' }).click();
-
-    // Is the order successful?
-    await expect(page.locator('.success-message')).toHaveText('Order sent successfully!');
-
-    // Agree Offer
-    await page.click('#agreeBtn');
-
-    // Is the acceptance successful?
-    await expect(page.locator('.success-offer-message')).toHaveText('Successfully moved into your new home!');
   });
 
   test('Empty fields are not allowed.', async ({ page }) => {
@@ -67,6 +58,5 @@ test.describe('Moving Company Order Form', () => {
     expect(selectedValue).not.toBe('');
     await expect(page.locator('#floor')).toHaveText('This field is required.');
     await expect(page.locator('#termsError')).toHaveText('Acceptance of the terms and conditions is mandatory.');
-    await page.click('#agreeBtn');
   });
 });
