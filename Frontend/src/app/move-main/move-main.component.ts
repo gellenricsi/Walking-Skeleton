@@ -61,7 +61,19 @@ export class MoveMainComponent{
       .subscribe({
         next: (data) => {
           console.log('Movement created: ', data);
-          this.form.reset(); // Reset the form after successful submission
+          this.form.reset({
+            name: null,
+            email: null,
+            phone: null,
+            pickupAddress: null,
+            deliveryAddress: null,
+            movingDate: null,
+            floor: null,
+            terms: false,
+            truckType: null,
+            elevator: false,
+            note: null
+          }); // Reset the form after successful submission
           alert("Movement has been successfully created!"); // Notify the user
         },
         error: (err) => {
