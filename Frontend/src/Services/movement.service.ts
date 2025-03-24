@@ -8,10 +8,11 @@ import { Observable } from 'rxjs';
 })
 export class MovementService {
 
-  private apiUrl = `http://localhost:8080/movement`;
+  private apiUrl = `http://localhost:8080/movement`; // Backend API endpoint
 
   constructor(private http: HttpClient) {}
 
+  // Sends a POST request to create a new movement entry.
   createMovement(movement: MovementCreateRequest): Observable<any> {
     return this.http.post<Movement>(this.apiUrl, movement);
   }

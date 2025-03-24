@@ -35,6 +35,7 @@ export class MoveMainComponent{
 
   constructor(private fb: FormBuilder, private datePipe: DatePipe, private movementService: MovementService) {
 
+    // Initialize the form with fields and their validators
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40)]],
       email: ['', [Validators.required, Validators.email]],
@@ -50,25 +51,28 @@ export class MoveMainComponent{
     });
   }
 
+  // Function triggered when the form is submitted
   onSubmit(): void {
     if (this.form.valid) {
       const formattedDate = this.datePipe.transform(this.form.get('movingDate')?.value, 'yyyy-MM-dd');
       
+      // Call the movement service to send form data to the backend
       this.movementService.createMovement(this.form.value)
       .subscribe({
         next: (data) => {
           console.log('Movement created: ', data);
-          this.form.reset();
-          alert("Movement has been successfully created!");
+          this.form.reset(); // Reset the form after successful submission
+          alert("Movement has been successfully created!"); // Notify the user
         },
         error: (err) => {
           console.log('Error: ', err);
-          alert("An error has been occured.");
+          alert("An error has been occured."); // Show error message if request fails
         }
       })
     }
   }
 
+  // Custom validator to ensure the selected moving date is in the future
   futureDateValidator(control: FormGroup) {
     if (!control.value) return { invalidDate: true };
     const selectedDate = new Date(control.value);
