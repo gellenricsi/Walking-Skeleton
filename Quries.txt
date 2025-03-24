@@ -1,0 +1,15 @@
+CREATE TABLE Request_Relocation (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(40) NOT NULL CHECK (LENGTH(name) >= 2),
+    email VARCHAR(255) NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+    phone VARCHAR(20) NOT NULL CHECK (phone ~ '^06(?:20|30|70|1)[0-9]{7}$'),
+    pickup_address TEXT NOT NULL,
+    delivery_address TEXT NOT NULL,
+    moving_date DATE NOT NULL CHECK (moving_date >= CURRENT_DATE),
+    floor INT NOT NULL,
+    terms BOOLEAN NOT NULL CHECK (terms = TRUE),
+    truck_type VARCHAR(50) NOT NULL,
+    elevator BOOLEAN DEFAULT FALSE,
+    note TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
