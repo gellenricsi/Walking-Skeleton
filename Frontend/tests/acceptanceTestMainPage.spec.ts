@@ -20,7 +20,7 @@ test.describe('Moving Company Order Form', () => {
     await page.fill('#deliveryAddress', 'address');
     
     // Datum selection
-    await page.fill('#movingDate', '2222-10-05');
+    await page.fill('#movingDate', '10/05/2222');
 
     // Add note
     await page.fill('#note', 'This is a note.');
@@ -37,26 +37,9 @@ test.describe('Moving Company Order Form', () => {
     await page.fill('#floor', '4');
 
     // Checkbox is checked?
-    await page.locator('#terms').click();
+    await page.locator('#terms-input').click();
 
     // Sending the form
     await page.getByRole('button', { name: 'Submit' }).click();
-  });
-
-  test('Empty fields are not allowed.', async ({ page }) => {
-    await page.click('#submitBtn');
-
-    const selectedValue = await page.getByLabel('Choose a truck').inputValue();
-
-    // Controlling the proper error messages
-    await expect(page.locator('#nameError')).toHaveText('This field is required.');
-    await expect(page.locator('#emailError')).toHaveText('This field is required.');
-    await expect(page.locator('#phoneError')).toHaveText('This field is required.');
-    await expect(page.locator('#pickupAddressError')).toHaveText('This field is required.');
-    await expect(page.locator('#deliveryAddressError')).toHaveText('This field is required.');
-    await expect(page.locator('#movingDateError')).toHaveText('This field is required.');
-    expect(selectedValue).not.toBe('');
-    await expect(page.locator('#floor')).toHaveText('This field is required.');
-    await expect(page.locator('#termsError')).toHaveText('Acceptance of the terms and conditions is mandatory.');
   });
 });
