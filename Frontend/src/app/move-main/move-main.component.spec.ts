@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { CommonModule, DatePipe } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('MoveMainComponent', () => {
   let component: MoveMainComponent;
@@ -29,6 +30,7 @@ describe('MoveMainComponent', () => {
         DatePipe,
         FormsModule,
         CommonModule,
+        HttpClientTestingModule,
         MoveMainComponent
       ],
       providers: [DatePipe]
