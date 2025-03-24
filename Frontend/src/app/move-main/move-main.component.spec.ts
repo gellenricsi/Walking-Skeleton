@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
 describe('MoveMainComponent', () => {
   let component: MoveMainComponent;
@@ -117,9 +118,7 @@ describe('MoveMainComponent', () => {
   }); 
 
   // Test that the form submits successfully when all fields are filled correctly
-  it('should submit the form when all fields are valid', () => {
-    const submitButton = fixture.debugElement.query(By.css('#submitBtn'));
-  
+  it('should reset the form after successful submission', () => {
     // Fill out the form with valid values
     component.form.controls['name'].setValue('John Wick');
     component.form.controls['email'].setValue('john@wick.com');
@@ -130,19 +129,37 @@ describe('MoveMainComponent', () => {
     component.form.controls['floor'].setValue('3');
     component.form.controls['terms'].setValue(true);
     component.form.controls['truckType'].setValue('Xl');
-  
-    fixture.detectChanges();
-    submitButton.nativeElement.click();
-  
-    // Check if the form is valid and submission is allowed
-    expect(component.form.valid).toBeTrue();
+    
+    const movementServiceSpy = spyOn(component['movementService'], 'createMovement').and.returnValue(of({}));
+    
+    // Simulate form submission
+    component.onSubmit();
+    
+    expect(movementServiceSpy).toHaveBeenCalled();
+    
+    // Check that the form is reset
+    expect(component.form.controls['name'].value).toBeNull();
+    expect(component.form.controls['email'].value).toBeNull();
+    expect(component.form.controls['phone'].value).toBeNull();
+    expect(component.form.controls['pickupAddress'].value).toBeNull();
+    expect(component.form.controls['deliveryAddress'].value).toBeNull();
+    expect(component.form.controls['movingDate'].value).toBeNull();
+    expect(component.form.controls['floor'].value).toBeNull();
+    expect(component.form.controls['terms'].value).toBeFalse();
+    expect(component.form.controls['truckType'].value).toBeNull();
+    expect(component.form.controls['elevator'].value).toBeFalse();
+    expect(component.form.controls['note'].value).toBeNull();
   });
-
+  
   // Test that the elevator option can be selected
   it('should allow to select elevator option', () => {
     const elevatorControl = component.form.controls['elevator'];
+    
     elevatorControl.setValue(true);
     expect(elevatorControl.value).toBeTrue();
+    
+    elevatorControl.setValue(false);
+    expect(elevatorControl.value).toBeFalse();
   });
 
   // Elevator option should be selected
