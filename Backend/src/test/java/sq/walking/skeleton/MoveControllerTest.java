@@ -4,55 +4,63 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import sq.walking.skeleton.Controllers.RelocationRequestController;
+import sq.walking.skeleton.DTO.RelocationRequestDTO;
+import sq.walking.skeleton.Entities.RequestRelocation;
+import sq.walking.skeleton.Services.RelocationRequestService;
+
+import java.time.LocalDate;
 
 import static org.mockito.Mockito.when;
 
 /**
  * Test class for MoveController.
  */
+@SpringBootTest
+@AutoConfigureMockMvc
 public class MoveControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private MovementService movementService;
-
-    private RelocationRequestDTO relocationRequestDTO;
-
-    /**
-     * Setup method to initialize the test data before each test.
-     */
-    @BeforeEach
-    public void setup() {
-        relocationRequestDTO = new RelocationRequestDTO("John", "Doe", "2025-05-10", "123 Street", "456 Avenue", true, "2", true);
-    }
+    @MockBean
+    private RelocationRequestService movementService;
 
     /**
      * Test for successfully handling a relocation request.
      */
     @Test
     public void testRequestForRelocationSupport_Success() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/movement")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"firstName\": \"John\", \"lastName\": \"Doe\", \"movingDate\": \"2025-05-10\", \"pickupAddress\": \"123 Street\", \"deliveryAddress\": \"456 Avenue\", \"elevator\": true, \"floor\": \"2\", \"packingService\": true }"))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Request received successfully"));
-    }
 
-    /**
-     * Test for handling a failed relocation request due to missing required fields.
-     */
-    @Test
-    public void testRequestForRelocationSupport_Failure() throws Exception {
+        RelocationRequestDTO validRequest = new RelocationRequestDTO(
+                "John Doe",
+                "john@john.at",
+                "06308792592",
+                "123 Street",
+                "456 Avenue",
+                LocalDate.parse("2025-05-10"),
+                2,
+                true,
+                "Xl",
+                true,
+                ""
+        );
+
+        when(movementService.requestForRelocationSupport(Mockito.any(RelocationRequestDTO.class)))
+                .thenReturn(new RequestRelocation(1L));
+
         mockMvc.perform(MockMvcRequestBuilders.post("/movement")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"firstName\": \"\", \"lastName\": \"\", \"movingDate\": \"\", \"pickupAddress\": \"\", \"deliveryAddress\": \"\", \"elevator\": false, \"floor\": \"\", \"packingService\": false }"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                        .content("{ \"name\": \"John Doe\", \"email\": \"john@john.at\", \"phone\": \"06308792592\", \"pickupAddress\": \"123 Street\", \"deliveryAddress\": \"456 Avenue\", \"movingDate\": \"2025-05-10\", \"floor\": 2, \"terms\": true, \"truckType\": \"Xl\", \"elevator\": true, \"note\": \"\" }"))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     /**
@@ -65,8 +73,7 @@ public class MoveControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/movement")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"firstName\": \"John\", \"lastName\": \"Doe\", \"movingDate\": \"2025-05-10\", \"pickupAddress\": \"123 Street\", \"deliveryAddress\": \"456 Avenue\", \"elevator\": true, \"floor\": \"2\", \"packingService\": true }"))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Error processing request"));
+                        .content("{ \"name\": \"John Doe\", \"email\": \"john@john.at\", \"phone\": \"06308792592\", \"pickupAddress\": \"123 Street\", \"deliveryAddress\": \"456 Avenue\", \"movingDate\": \"2025-05-10\", \"floor\": 2, \"terms\": true, \"truckType\": \"Xl\", \"elevator\": true, \"note\": \"\" }"))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
     }
 }

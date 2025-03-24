@@ -7,20 +7,25 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import sq.walking.skeleton.DTO.RelocationRequestDTO;
+import sq.walking.skeleton.Entities.RequestRelocation;
+import sq.walking.skeleton.Repositroies.RequestRelocationRepository;
+import sq.walking.skeleton.Services.RelocationRequestService;
 
-import static org.mockito.Mockito.when;
+import java.time.LocalDate;
+
+import static org.mockito.Mockito.*;
 
 /**
  * Test class for MovementService.
  */
-@SpringBootTest
 public class MovementServiceTest {
 
     @Mock
     private RequestRelocationRepository requestRelocationRepository;
 
     @InjectMocks
-    private MovementService movementService;
+    private RelocationRequestService movementService;
 
     private RelocationRequestDTO relocationRequestDTO;
 
@@ -30,7 +35,7 @@ public class MovementServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        relocationRequestDTO = new RelocationRequestDTO("John", "Doe", "2025-05-10", "123 Street", "456 Avenue", true, "2nd", true);
+        relocationRequestDTO = new RelocationRequestDTO("John Doe", "john@john.at", "06308792592", "123 Street", "456 Avenue", LocalDate.parse("2025-05-10"),2, true, "2nd", true,"");
     }
 
     /**
@@ -38,13 +43,16 @@ public class MovementServiceTest {
      */
     @Test
     public void testRequestForRelocationSupport_Success() {
-        RequestRelocation requestRelocation = new RequestRelocation("John", "Doe", "2025-05-10", "123 Street", "456 Avenue", true, "2nd", true);
+        RequestRelocation requestRelocation = new RequestRelocation(
+                "John Doe", "john@john.at", "06308792592", "123 Street", "456 Avenue",
+                LocalDate.parse("2025-05-10"), 2, true, "2nd", true, ""
+        );
 
         when(requestRelocationRepository.save(Mockito.any(RequestRelocation.class))).thenReturn(requestRelocation);
 
         movementService.requestForRelocationSupport(relocationRequestDTO);
 
-        Mockito.verify(requestRelocationRepository, Mockito.times(1)).save(Mockito.any(RequestRelocation.class));
+        verify(requestRelocationRepository, times(1)).save(Mockito.any(RequestRelocation.class));
     }
 
     /**
