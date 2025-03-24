@@ -1,5 +1,6 @@
 package sq.walking.skeleton;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class MoveControllerTest {
     @MockBean
     private RelocationRequestService movementService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     /**
      * Test for successfully handling a relocation request.
      */
@@ -51,12 +55,26 @@ public class MoveControllerTest {
                 ""
         );
 
-        when(movementService.requestForRelocationSupport(Mockito.any(RelocationRequestDTO.class)))
+        RelocationRequestDTO relocationRequestDTO = new RelocationRequestDTO(
+                "John Doe",
+                "john@john.at",
+                "06308792592",
+                "123 Street",
+                "456 Avenue",
+                LocalDate.parse("2025-05-10"),
+                2,
+                true,
+                "Xl",
+                true,
+                ""
+        );
+
+        when(movementService.requestForRelocationSupport(relocationRequestDTO))
                 .thenReturn(requestRelocation);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/movement")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"name\": \"John Doe\", \"email\": \"john@john.at\", \"phone\": \"06308792592\", \"pickupAddress\": \"123 Street\", \"deliveryAddress\": \"456 Avenue\", \"movingDate\": \"2026-05-10\", \"floor\": 2, \"terms\": true, \"truckType\": \"Xl\", \"elevator\": true, \"note\": \"\" }"))
+                        .content(objectMapper.writeValueAsString(relocationRequestDTO)))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
