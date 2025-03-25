@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class MovementService {
 
-  private apiUrl = `http://localhost:8080/movement`; // Backend API endpoint
+  public apiUrl = `http://localhost:8080/movement`; // Backend API endpoint
 
   constructor(private http: HttpClient) {}
 

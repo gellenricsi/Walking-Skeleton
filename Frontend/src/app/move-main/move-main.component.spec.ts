@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('MoveMainComponent', () => {
   let component: MoveMainComponent;
@@ -166,5 +166,28 @@ describe('MoveMainComponent', () => {
     const noteControl = component.form.controls['note'];
     noteControl.setValue('This is a note.');
     expect(noteControl.value).toBe('This is a note.'); // Note should be correctly set
+  });
+
+   // Test that an error occures while submitting the form when all fields are filled correctly
+  it('should handle error when movement service fails', () => {
+    // Fill out the form with valid values
+    component.form.controls['name'].setValue('John Wick');
+    component.form.controls['email'].setValue('john@wick.com');
+    component.form.controls['phone'].setValue('06308792592');
+    component.form.controls['pickupAddress'].setValue('123 Street');
+    component.form.controls['deliveryAddress'].setValue('456 Avenue');
+    component.form.controls['movingDate'].setValue(new Date('2025-05-10'));
+    component.form.controls['floor'].setValue('3');
+    component.form.controls['terms'].setValue(true);
+    component.form.controls['truckType'].setValue('Xl');
+  
+    const movementServiceSpy = spyOn(component['movementService'], 'createMovement').and.returnValue(
+      throwError(() => new Error('Service error'))
+    );
+  
+    // Simulate form submission
+    component.onSubmit();
+  
+    expect(movementServiceSpy).toHaveBeenCalled();
   });
 });
