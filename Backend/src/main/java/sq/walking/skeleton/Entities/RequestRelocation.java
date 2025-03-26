@@ -48,7 +48,7 @@ public class RequestRelocation {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public RequestRelocation(long l) {}
+    public RequestRelocation() {}
 
     public RequestRelocation(String name, String email, String phone, String pickupAddress,
                              String deliveryAddress, LocalDate movingDate, int floor, boolean terms,
