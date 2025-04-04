@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Moving Company Order Form', () => {
-  
   // Go to this site
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:4200');
@@ -18,7 +17,7 @@ test.describe('Moving Company Order Form', () => {
     await page.fill('#phone', '06308792592');
     await page.fill('#pickupAddress', 'address');
     await page.fill('#deliveryAddress', 'address');
-    
+
     // Datum selection
     await page.fill('#movingDate', '10/05/2222');
 

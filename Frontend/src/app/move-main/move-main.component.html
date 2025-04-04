@@ -4,52 +4,98 @@
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" id="name" required />
-      <mat-error *ngIf="form.controls['name'].hasError('required')">Name is required</mat-error>
-      <mat-error *ngIf="form.controls['name'].hasError('minlength')">Name must be at least 2 characters long</mat-error>
+      <mat-error *ngIf="form.controls['name'].hasError('required')"
+        >Name is required</mat-error
+      >
+      <mat-error *ngIf="form.controls['name'].hasError('minlength')"
+        >Name must be at least 2 characters long</mat-error
+      >
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" id="email" type="email" required />
-      <mat-error *ngIf="form.controls['email'].hasError('required')">Email is required</mat-error>
-      <mat-error *ngIf="form.controls['email'].hasError('email')">Please enter a valid email</mat-error>
+      <input
+        matInput
+        formControlName="email"
+        id="email"
+        type="email"
+        required
+      />
+      <mat-error *ngIf="form.controls['email'].hasError('required')"
+        >Email is required</mat-error
+      >
+      <mat-error *ngIf="form.controls['email'].hasError('email')"
+        >Please enter a valid email</mat-error
+      >
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Phone E.g: 06308792591</mat-label>
       <input matInput formControlName="phone" id="phone" required />
-      <mat-error *ngIf="form.controls['phone'].hasError('required')">Phone number is required</mat-error>
-      <mat-error *ngIf="form.controls['phone'].hasError('pattern')">Enter a valid phone number</mat-error>
+      <mat-error *ngIf="form.controls['phone'].hasError('required')"
+        >Phone number is required</mat-error
+      >
+      <mat-error *ngIf="form.controls['phone'].hasError('pattern')"
+        >Enter a valid phone number</mat-error
+      >
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Pickup Address</mat-label>
-      <input matInput formControlName="pickupAddress" id="pickupAddress" required />
-      <mat-error *ngIf="form.controls['pickupAddress'].hasError('required')">Pickup address is required</mat-error>
+      <input
+        matInput
+        formControlName="pickupAddress"
+        id="pickupAddress"
+        required
+      />
+      <mat-error *ngIf="form.controls['pickupAddress'].hasError('required')"
+        >Pickup address is required</mat-error
+      >
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Delivery Address</mat-label>
-      <input matInput formControlName="deliveryAddress" id="deliveryAddress" required />
-      <mat-error *ngIf="form.controls['deliveryAddress'].hasError('required')">Delivery address is required</mat-error>
+      <input
+        matInput
+        formControlName="deliveryAddress"
+        id="deliveryAddress"
+        required
+      />
+      <mat-error *ngIf="form.controls['deliveryAddress'].hasError('required')"
+        >Delivery address is required</mat-error
+      >
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Moving Date E.g: 8/24/2025</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="movingDate" id="movingDate" required />
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="movingDate"
+        id="movingDate"
+        required
+      />
       <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="form.controls['movingDate'].hasError('required')">Moving date is required</mat-error>
+      <mat-error *ngIf="form.controls['movingDate'].hasError('required')"
+        >Moving date is required</mat-error
+      >
     </mat-form-field>
-  
+
     <mat-form-field appearance="fill">
       <mat-label>Floor</mat-label>
       <input matInput formControlName="floor" id="floor" required />
-      <mat-error *ngIf="form.controls['floor'].hasError('required')">Floor is required</mat-error>
+      <mat-error *ngIf="form.controls['floor'].hasError('required')"
+        >Floor is required</mat-error
+      >
     </mat-form-field>
-  
-    <mat-checkbox formControlName="terms" id="terms" required>Accept terms and conditions</mat-checkbox>
-    <mat-error *ngIf="form.controls['terms'].hasError('required')">You must accept the terms</mat-error>
-  
+
+    <mat-checkbox formControlName="terms" id="terms" required
+      >Accept terms and conditions</mat-checkbox
+    >
+    <mat-error *ngIf="form.controls['terms'].hasError('required')"
+      >You must accept the terms</mat-error
+    >
+
     <mat-form-field appearance="fill">
       <mat-label>Choose a truck</mat-label>
       <mat-select formControlName="truckType" panelClass="panel" required>
@@ -57,17 +103,22 @@
         <mat-option value="M">Medium</mat-option>
         <mat-option value="Xl">XLarge</mat-option>
       </mat-select>
-      <mat-error *ngIf="form.controls['truckType'].hasError('required')">Truck type is required</mat-error>
+      <mat-error *ngIf="form.controls['truckType'].hasError('required')"
+        >Truck type is required</mat-error
+      >
     </mat-form-field>
-  
-    <mat-checkbox formControlName="elevator" id="elevator">Elevator available</mat-checkbox>
-  
+
+    <mat-checkbox formControlName="elevator" id="elevator"
+      >Elevator available</mat-checkbox
+    >
+
     <mat-form-field appearance="fill">
       <mat-label>Note</mat-label>
       <textarea matInput formControlName="note" id="note"></textarea>
     </mat-form-field>
-  
-    <button type="submit" [disabled]="form.invalid" id="submitBtn">Submit</button>
+
+    <button type="submit" [disabled]="form.invalid" id="submitBtn">
+      Submit
+    </button>
   </form>
 </div>
-  

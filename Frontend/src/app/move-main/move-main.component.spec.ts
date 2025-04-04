@@ -31,12 +31,10 @@ describe('MoveMainComponent', () => {
         FormsModule,
         CommonModule,
         HttpClientTestingModule,
-        MoveMainComponent
+        MoveMainComponent,
       ],
-      providers: [DatePipe]
-    })
-    .compileComponents();
-
+      providers: [DatePipe],
+    }).compileComponents();
 
     // Create the component and fixture instances
     fixture = TestBed.createComponent(MoveMainComponent);
@@ -51,11 +49,20 @@ describe('MoveMainComponent', () => {
 
     // Verify that all form controls are present
     const controls = [
-      'name', 'email', 'phone', 'pickupAddress', 'deliveryAddress', 
-      'movingDate', 'floor', 'terms', 'note', 'elevator', 'truckType'
+      'name',
+      'email',
+      'phone',
+      'pickupAddress',
+      'deliveryAddress',
+      'movingDate',
+      'floor',
+      'terms',
+      'note',
+      'elevator',
+      'truckType',
     ];
 
-    controls.forEach(control => {
+    controls.forEach((control) => {
       expect(component.form.controls[control]).toBeTruthy();
     });
   });
@@ -63,11 +70,18 @@ describe('MoveMainComponent', () => {
   // Test that required fields are validated correctly (E.G. cannot be empty)
   it('should make name, email, phone, pickupAddress, deliveryAddress, truckType, movingDate, floor, and terms required', () => {
     const requiredFields = [
-      'name', 'email', 'phone', 'pickupAddress', 'deliveryAddress', 
-      'truckType', 'movingDate', 'floor', 'terms'
+      'name',
+      'email',
+      'phone',
+      'pickupAddress',
+      'deliveryAddress',
+      'truckType',
+      'movingDate',
+      'floor',
+      'terms',
     ];
-  
-    requiredFields.forEach(field => {
+
+    requiredFields.forEach((field) => {
       const control = component.form.controls[field];
       control.setValue('');
       expect(control.valid).toBeFalse(); // Should be invalid when empty
@@ -78,9 +92,9 @@ describe('MoveMainComponent', () => {
   it('should invalidate moving date when it is in the past', () => {
     const pastDate = new Date();
     pastDate.setDate(pastDate.getDate() - 5); // Set a date 5 days in the past
-  
+
     component.form.controls['movingDate'].setValue(pastDate);
-  
+
     expect(component.form.controls['movingDate'].valid).toBeFalse(); // Should be invalid
     expect(component.form.controls['movingDate'].invalid).toBeTrue(); //Should return 'invalid'
   });
@@ -88,10 +102,10 @@ describe('MoveMainComponent', () => {
   // Test that the phone number is validated correctly
   it('should validate phone number correctly', () => {
     const phoneControl = component.form.controls['phone'];
-  
+
     phoneControl.setValue('06308792592');
     expect(phoneControl.valid).toBeTrue(); // Should be valid for correct phone number
-  
+
     phoneControl.setValue('invalid-phone');
     expect(phoneControl.valid).toBeFalse(); // Should be invalid for incorrect phone number format
   });
@@ -101,7 +115,7 @@ describe('MoveMainComponent', () => {
     const termsControl = component.form.controls['terms'];
     termsControl.setValue(false);
     expect(termsControl.valid).toBeFalse(); // Should be invalid if unchecked
-  
+
     termsControl.setValue(true);
     expect(termsControl.valid).toBeTrue(); // Should be valid if checked
   });
@@ -111,10 +125,10 @@ describe('MoveMainComponent', () => {
     const truckControl = component.form.controls['truckType'];
     truckControl.setValue('');
     expect(truckControl.valid).toBeFalse(); // Should be invalid if no truck type selected
-  
+
     truckControl.setValue('Xl');
     expect(truckControl.valid).toBeTrue(); // Should be valid when truck type is selected
-  }); 
+  });
 
   // Test that the form submits successfully when all fields are filled correctly
   it('should reset the form after successful submission', () => {
@@ -128,14 +142,17 @@ describe('MoveMainComponent', () => {
     component.form.controls['floor'].setValue('3');
     component.form.controls['terms'].setValue(true);
     component.form.controls['truckType'].setValue('Xl');
-    
-    const movementServiceSpy = spyOn(component['movementService'], 'createMovement').and.returnValue(of({}));
-    
+
+    const movementServiceSpy = spyOn(
+      component['movementService'],
+      'createMovement',
+    ).and.returnValue(of({}));
+
     // Simulate form submission
     component.onSubmit();
-    
+
     expect(movementServiceSpy).toHaveBeenCalled();
-    
+
     // Check that the form is reset
     expect(component.form.controls['name'].value).toBeNull();
     expect(component.form.controls['email'].value).toBeNull();
@@ -149,14 +166,14 @@ describe('MoveMainComponent', () => {
     expect(component.form.controls['elevator'].value).toBeFalse();
     expect(component.form.controls['note'].value).toBeNull();
   });
-  
+
   // Test that the elevator option can be selected
   it('should allow to select elevator option', () => {
     const elevatorControl = component.form.controls['elevator'];
-    
+
     elevatorControl.setValue(true);
     expect(elevatorControl.value).toBeTrue();
-    
+
     elevatorControl.setValue(false);
     expect(elevatorControl.value).toBeFalse();
   });
@@ -168,7 +185,7 @@ describe('MoveMainComponent', () => {
     expect(noteControl.value).toBe('This is a note.'); // Note should be correctly set
   });
 
-   // Test that an error occures while submitting the form when all fields are filled correctly
+  // Test that an error occures while submitting the form when all fields are filled correctly
   it('should handle error when movement service fails', () => {
     // Fill out the form with valid values
     component.form.controls['name'].setValue('John Wick');
@@ -180,14 +197,15 @@ describe('MoveMainComponent', () => {
     component.form.controls['floor'].setValue('3');
     component.form.controls['terms'].setValue(true);
     component.form.controls['truckType'].setValue('Xl');
-  
-    const movementServiceSpy = spyOn(component['movementService'], 'createMovement').and.returnValue(
-      throwError(() => new Error('Service error'))
-    );
-  
+
+    const movementServiceSpy = spyOn(
+      component['movementService'],
+      'createMovement',
+    ).and.returnValue(throwError(() => new Error('Service error')));
+
     // Simulate form submission
     component.onSubmit();
-  
+
     expect(movementServiceSpy).toHaveBeenCalled();
   });
 });

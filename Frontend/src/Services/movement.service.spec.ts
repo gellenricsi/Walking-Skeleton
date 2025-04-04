@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
 import { MovementService } from './movement.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { MovementCreateRequest } from '../Interfaces/movement';
 
 describe('MovementService', () => {
@@ -12,7 +15,7 @@ describe('MovementService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [MovementService]
+      providers: [MovementService],
     });
 
     service = TestBed.inject(MovementService);
@@ -42,11 +45,11 @@ describe('MovementService', () => {
       terms: true,
       note: 'note',
       elevator: true,
-      truckType: 'Xl'
+      truckType: 'Xl',
     };
 
     // Call the createMovement method and subscribe to its response
-    service.createMovement(dummyMovement).subscribe(response => {
+    service.createMovement(dummyMovement).subscribe((response) => {
       expect(response).toEqual(dummyMovement); // Ensure the response matches the mock data
     });
 
